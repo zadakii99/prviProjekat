@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Proizvodi >
+	<Proizvod >
+		<Naziv>ASUS</Naziv>
+		<Kategorija >monitori</Kategorija>
+		<Cena valuta="din">24000</Cena>
+		<Tekst>Gaming monitor 144Hz</Tekst>
+		<Oznake>
+			<Oznaka>gaming</Oznaka>
+            <Oznaka>144Hz</Oznaka>
+		</Oznake>
+		<Akcije>
+			<Akcija cena="19200" datum_isteka="29.09.2021">20%</Akcija>
+			<Akcija cena="19200" datum_isteka="05.10.2021">20%</Akcija>
+		</Akcije>
+	</Proizvod>
+	<Proizvod >
+		<Naziv>HP</Naziv>
+		<Kategorija >monitori</Kategorija>
+		<Cena valuta="din">38000</Cena>
+		<Tekst>Super Gaming monitor 240Hz</Tekst>
+		<Oznake>
+			<Oznaka>Gaming</Oznaka>
+			<Oznaka>240Hz</Oznaka>
+		</Oznake>
+		<Akcije>
+			<Akcija cena="34200" datum_isteka="30.09.2021">10%</Akcija>
+		</Akcije>
+	</Proizvod>
+</Proizvodi>
