@@ -1,7 +1,10 @@
+
 const fs=require('fs');
 const datetime=require('date-and-time');
 const file="proizvodi.json";
 const { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } = require('constants');
+const { type } = require('os');
+const exp = require('constants');
 
 
 // citanje 
@@ -13,72 +16,90 @@ let procitajPodatkeIzFajla=()=>{
         }
         return data;
     });
-    return JSON.parse(p);
+
+    p=JSON.parse(p);
+
+    return p;
 }
 
 // snimanje
 let snimiProizvode=(data)=>{
-    fs.writeFileSync(file,JSON.stringify(data));
+    fs.writeFileSync(file,JSON.stringify({"proizvodi":data}));
 }
 
-exports.proizvodi=procitajPodatkeIzFajla();
+let podaci=procitajPodatkeIzFajla();
+exports.proizvodi=podaci.proizvodi;
+
 
 // dodavanje proizvoda
-exports.dodajProizvod=(noviproizvod)=>{
+exports.dodajProizvod=(novi_proizvod)=>{
     let id=1;
-    let proizvod={};
-    let oznake=noviproizvod.oznake.split(',');
-    if(proizvodi.length>0){
-         id=proizvodi.length+1;
+
+    if(this.proizvodi.length>0){
+         id=this.proizvodi.length+1;
     }
-   
-    // izmeniti ovo treba preko for petlje
-    let akcije= [];
-    let akcija={"id_akcije":1,"nova_cena":parseFloat(noviproizvod.nova_cena),
-                "datum_isteka":noviproizvod.datum_isteka};
-    akcije.push(akcija);
 
-    proizvod={
+    let proizvod={
         "id":id,
-        "naziv":noviproizvod.naziv,
-        "kategorija":noviproizvod.kategorija,
-        "cena":parseFloat(noviproizvod.cena),
-        "tekst":noviproizvod.tekst,
-        "oznake":oznake,
-        "akcije":akcije
+        "naziv":novi_proizvod.naziv,
+        "kategorija":novi_proizvod.kategorija,
+        "cena":parseFloat(novi_proizvod.cena),
+        "tekst":novi_proizvod.tekst,
+        "oznake":novi_proizvod.oznake,
     };
+    if(novi_proizvod.akcije!=undefined){
+        proizvod.akcije=novi_proizvod.akcije;
+    }
 
-    proizvodi.push(proizvod);
-    snimiProizvode(proizvodi);
+    this.proizvodi.push(proizvod);
+    snimiProizvode(this.proizvodi);
 }
 
-// izbacivanje proizvoda sa odredjenim id-em
+// izbacivanje proizvoda 
 exports.izbrisiProizvod=(id)=>{
-    for(let i=0;i<proizvodi.length;i++){
-        if(proizvodi[i].id==id){
-            proizvodi.remove(i)
-            snimiProizvode(proizvodi);
+    this.proizvodi=this.proizvodi.filter(p=>p.id!=id);
+    snimiProizvode(this.proizvodi);
+}
+
+// izmena proizvoda
+exports.izmeniProizvod=(id,izmenjen_proizvod)=>{
+    for(let i=0;i<this.proizvodi.length;i++){
+        if(id==this.proizvodi[i].id){
+            if(izmenjen_proizvod.naziv!=undefined) this.proizvodi[i].naziv=izmenjen_proizvod.naziv;
+            if(izmenjen_proizvod.kategorija!=undefined) this.proizvodi[i].kategorija=izmenjen_proizvod.kategorija;
+            if(izmenjen_proizvod.cena!=undefined) this.proizvodi[i].cena=izmenjen_proizvod.cena;
+            if(izmenjen_proizvod.tekst!=undefined) this.proizvodi[i].tekst=izmenjen_proizvod.tekst;
+            if(izmenjen_proizvod.oznake!=undefined) this.proizvodi[i].oznake=izmenjen_proizvod.oznake;
+            if(izmenjen_proizvod.akcije!=undefined) this.proizvodi[i].akcije=izmenjen_proizvod.akcije;
             break;
         }
     }
+
+
+    snimiProizvode(this.proizvodi);
 }
 
-exports.izmeniProizvod=(izmenaProizvod)=>{
-    for(let i=0;i<proizvodi.length;i++){
-        if(izmenaProizvod.id==proizvodi[i].id){
-            proizvodi[i].naziv=izmenaProizvod.naziv;
-            proizvodi[i].kategorija=izmenaProizvod.kategorija;
-            proizvodi[i].cena=izmenaProizvod.cena;
-            proizvodi[i].tekst=izmenaProizvod.tekst;
-            proizvodi[i].oznake=izmenaProizvod.oznake;
-            if(proizvodi[i].akcije!=undefined){
-                for(let j=0;j<proizvodi[i].akcije.length;j++){
-                    proizvodi[i].akcije[j].nova_cena=izmenaProizvod.nova_cena;
-                    proizvodi[i].akcije[j].datum_isteka=izmenaProizvod.datum_isteka;
-        
-                }
+// filtriranje
+exports.filtrirajPoNazivu=(naziv)=>{
+    return this.proizvodi.filter(p=>p.naziv==naziv)
+}
+
+exports.filtrirajPoKategoriji=(kategorija)=>{
+   return this.proizvodi.filter(p=>p.kategorija==kategorija);
+}
+
+exports.filtrirajPoOznaci=(oznaka)=>{
+    let filtrirani=[];
+    for(let i=0;i<this.proizvodi.length;i++){
+        let oznake=this.proizvodi[i].oznake.split(",");
+        for(let j=0;j<oznake.length;j++){
+            if(oznake[j]==oznaka) {
+                filtrirani.push(this.proizvodi[i]);
+                break;
             }
-        }
+        }     
+        
     }
-    snimiProizvode(proizvodi);
+
+    return filtrirani;
 }
