@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pocetna strana</title>
+  </head>
+
+  <body>
+    <h1>Izmena</h1>
+
+    <form action="/izmeni" method="POST">
+      
+      ID: #{id} <br>
+      NAZIV: #{naziv} <input type="text" name="naziv" > <br>
+      KATEGORIJA: #{kategorija} <input type="text" name="kategorija" ><br>
+      CENA: #{cena} <input type="text" name="cena" ><br>
+      TEKST: #{tekst} <input type="text" name="tekst" ><br>
+      OZNAKE: #{oznake} <input type="text" name="oznake" > <br>
+      AKCIJE: #{akcije} <input type="text" name="akcije"> <br>
+
+      <button type="submit">Izmeni</button>
+
+    </form>
+    
+
+  </body>
+</html>

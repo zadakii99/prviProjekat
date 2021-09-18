@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pocetna strana</title>
+  </head>
+
+  <body>
+    <h1>Pocetna</h1>
+
+    <h2>Filtriranje</h2>
+    <form action="/filtriraj" method="POST">
+      Po nazivu: <input type="text" name="naziv"> <br>
+      Po kategoriji: <input type="text" name="kategorija"> <br>
+      Po oznaci: <input type="text" name="oznaka"> <br>
+
+     <button type="submit">Filtriraj</button>
+    </form>
+
+    <br><br>
+    <a href="/dodavanje"><button>Dodavanje</button></a>
+    <br><br>
+
+
+    #{data}
+
+
+  </body>
+</html>
